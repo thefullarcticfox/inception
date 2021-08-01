@@ -1,7 +1,7 @@
 FROM	alpine:3.14
 WORKDIR	/srcs
 RUN		apk update && apk upgrade
-RUN		apk add --no-cache nginx openssl openssh
+RUN		apk add --no-cache nginx openssl openssh supervisor
 RUN		mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
 
 # copy indexpage and configs
@@ -9,6 +9,7 @@ COPY	./conf/localhost.conf		/etc/nginx/http.d/default.conf
 COPY	./conf/localhost.csr.cnf	/etc/ssl/certs/localhost.csr.cnf
 COPY	./conf/sshd_config			/etc/ssh/
 COPY	./conf/v3.ext				/etc/ssl/certs/v3.ext
+COPY	./conf/supervisord.conf		/etc/supervisord.conf
 COPY	./tools/index.html			/var/www/localhost/htdocs
 
 # checking www-data: 82 is the standard uid/gid for "www-data" in Alpine
@@ -38,4 +39,4 @@ RUN		adduser -D admin && \
 		echo "admin:admin42" | chpasswd && echo "root:admin42" | chpasswd
 
 EXPOSE		22 80 443
-ENTRYPOINT	nginx -g "daemon off;"
+ENTRYPOINT	supervisord -c /etc/supervisord.conf

@@ -11,9 +11,9 @@ start:
 	@docker-compose -f ./srcs/docker-compose.yml up
 
 clean:
+	@docker-compose -f ./srcs/docker-compose.yml down
 	@sudo rm -rvf ~/data/db
 	@sudo rm -rvf ~/data/wp
-	@docker-compose -f ./srcs/docker-compose.yml down
 
 cleanall: clean
 	@[[ -n "$(DOCKER_PS)" ]]		&& docker rm -f $(DOCKER_PS)			|| echo "No containers"

@@ -1,10 +1,15 @@
 FROM	alpine:3.14
 WORKDIR	/srcs
 RUN		apk update && apk upgrade
-RUN		apk add --no-cache nginx mariadb-client php7 php7-fpm php7-curl php7-dom php7-ftp \
+RUN		apk add --no-cache mariadb-client php7 php7-fpm php7-curl php7-dom php7-ftp \
 		php7-gd php7-iconv php7-json php7-mbstring php7-mysqli php7-openssl \
 		php7-posix php7-xml php7-xmlrpc php7-soap php7-zip php7-common php7-phar
-# nginx needed only for nginx user/group
+
+# nginx user/group from nginx package
+RUN		addgroup -Sg 82 www-data || true
+RUN		addgroup -S nginx || true
+RUN		adduser -S -D -H -h /var/lib/nginx -s /sbin/nologin -G nginx -g nginx nginx || true
+RUN		addgroup nginx www-data || true
 
 # download wordpress to be ready on entrypoint
 RUN		wget https://wordpress.org/latest.tar.gz -O ./wordpress.tar.gz
