@@ -12,7 +12,7 @@ then
 	if ! $(wp core is-installed --path=/var/www/localhost/htdocs/wordpress --allow-root)
 	then
 		# wp installation
-		wp core install --url="https://localhost/wordpress" \
+		wp core install --url="https://localhost/wordpress/" \
 		--title=inception --admin_user=arcticfox --admin_password=admin42 \
 		--admin_email=thefullarcticfox@users.noreply.github.com --skip-email \
 		--path=/var/www/localhost/htdocs/wordpress --allow-root

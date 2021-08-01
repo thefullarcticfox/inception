@@ -4,13 +4,13 @@ volumes:
     driver: local
     driver_opts:
       type: volume
-      device: /home/arcticfox/data/db
+      device: /home/${USER}/data/db
       o: bind
   wordpress-data:
     driver: local
     driver_opts:
       type: volume
-      device: /home/arcticfox/data/wp
+      device: /home/${USER}/data/wp
       o: bind
 
 networks:
