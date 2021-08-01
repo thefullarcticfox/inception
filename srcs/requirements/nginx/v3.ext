@@ -6,4 +6,4 @@ subjectAltName = @alt_names
 [alt_names]
 IP.1 = 127.0.0.1
 DNS.1 = localhost
-DNS.2 = salec.42.fr
+DNS.2 = arcticfox.42.fr

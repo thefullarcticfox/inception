@@ -1,22 +1,58 @@
 version: "3.9"  # optional since v1.27.0
-services:
-    nginx:
-        build: ./requirements/nginx/
-        container_name: nginx
-        hostname: salec
-        domainname: salec.42.fr
-        ports:
-            - "22:22"
-            - "80:80"
-            - "443:443"
-        networks:
-            inception:
-                aliases:
-                    - salec.42.fr
-        extra_hosts:
-            - "salec.42.fr:127.0.0.1"
-        restart: on-failure
-        init: true
+volumes:
+  mariadb-data:
+    driver: local
+    driver_opts:
+      type: volume
+      device: /home/arcticfox/data/db
+      o: bind
+  wordpress-data:
+    driver: local
+    driver_opts:
+      type: volume
+      device: /home/arcticfox/data/wp
+      o: bind
 
 networks:
-    inception:
+  inception:
+
+services:
+  nginx:
+    build: ./requirements/nginx/
+    container_name: nginx
+    hostname: arcticfox
+    domainname: arcticfox.42.fr
+    ports:
+        - "22:22"
+        - "80:80"
+        - "443:443"
+    networks:
+        inception:
+            aliases:
+                - arcticfox.42.fr
+    extra_hosts:
+        - "arcticfox.42.fr:127.0.0.1"
+    volumes:
+        - "wordpress-data:/var/www/localhost/htdocs"
+    restart: on-failure
+    init: true
+  mariadb:
+    build: ./requirements/mariadb/
+    container_name: mariadb
+    hostname: mariadb
+    ports:
+        - "3306:3306"
+    volumes:
+        - "mariadb-data:/var/www/localhost/htdocs"
+    restart: on-failure
+    init: true
+  wordpress:
+    build: ./requirements/wordpress/
+    container_name: wordpress
+    hostname: wordpress
+    ports:
+        - "9000:9000"
+    volumes:
+        - "wordpress-data:/var/www/localhost/htdocs"
+    restart: on-failure
+    init: true

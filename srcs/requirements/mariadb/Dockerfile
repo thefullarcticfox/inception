@@ -10,5 +10,5 @@ COPY	./createdb.sql ./
 COPY	./entrypoint.sh ./
 
 EXPOSE		3306
-VOLUME		/home/$USER/mariadb
+VOLUME		/var/lib/mysql
 ENTRYPOINT	sh ./entrypoint.sh
