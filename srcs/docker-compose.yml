@@ -17,42 +17,50 @@ networks:
   inception:
 
 services:
-  nginx:
-    build: ./requirements/nginx/
-    container_name: nginx
-    hostname: arcticfox
-    domainname: arcticfox.42.fr
-    ports:
-        - "22:22"
-        - "80:80"
-        - "443:443"
-    networks:
-        inception:
-            aliases:
-                - arcticfox.42.fr
-    extra_hosts:
-        - "arcticfox.42.fr:127.0.0.1"
-    volumes:
-        - "wordpress-data:/var/www/localhost/htdocs"
-    restart: on-failure
-    init: true
   mariadb:
     build: ./requirements/mariadb/
     container_name: mariadb
+    env_file: .env
     hostname: mariadb
     ports:
-        - "3306:3306"
+      - "3306:3306"
+    networks:
+      - inception
     volumes:
-        - "mariadb-data:/var/www/localhost/htdocs"
+      - "mariadb-data:/var/lib/mariadb"
     restart: on-failure
     init: true
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
+    depends_on:
+      - mariadb
+    env_file: .env
     hostname: wordpress
     ports:
-        - "9000:9000"
+      - "9000:9000"
+    networks:
+      - inception
     volumes:
-        - "wordpress-data:/var/www/localhost/htdocs"
+      - "wordpress-data:/var/www/localhost/htdocs/wordpress"
+    restart: on-failure
+    init: true
+  nginx:
+    build: ./requirements/nginx/
+    container_name: nginx
+    depends_on:
+      - wordpress
+    env_file: .env
+    hostname: nginx
+    ports:
+      - "22:22"
+      - "80:80"
+      - "443:443"
+    networks:
+      - inception
+    extra_hosts:
+      - "arcticfox.42.fr:127.0.0.1"
+    volumes:
+      - "wordpress-data:/var/www/localhost/htdocs/wordpress"
     restart: on-failure
     init: true

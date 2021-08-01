@@ -19,7 +19,7 @@
 /** The name of the database for WordPress */
 define('DB_NAME', 'serverdb');
 /** MySQL database username */
-define('DB_USER', 'mariadb');
+define('DB_USER', 'mysql');
 /** MySQL database password */
 define('DB_PASSWORD', 'admin42');
 /** MySQL hostname */

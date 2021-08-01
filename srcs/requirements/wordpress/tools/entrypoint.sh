@@ -1,9 +1,14 @@
 #!/bin/sh
 
+until echo "\q" | mariadb -h "mariadb" -u "mysql" -p"admin42" serverdb ; do
+  >&2 echo "MariaDB is unavailable - sleeping"
+  sleep 1
+done
+
 # if not already installed
 if [ ! -f /var/www/localhost/htdocs/index.php ]
 then
-	cp -r /srcs/wordpress/* /var/www/localhost/htdocs
+	cp -r /srcs/wordpress /var/www/localhost/htdocs/
 	if ! $(wp core is-installed --path=/var/www/localhost/htdocs --allow-root)
 	then
 		# wp installation
@@ -25,7 +30,6 @@ then
 		wp theme install bappi --activate \
 		--path=/var/www/localhost/htdocs --allow-root
 	fi
-	chown -R nginx:nginx /var/www/localhost/htdocs
 fi
 
 /usr/sbin/php-fpm7 -F

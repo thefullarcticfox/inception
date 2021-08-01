@@ -1,0 +1,6 @@
+CREATE DATABASE IF NOT EXISTS serverdb;
+SET PASSWORD FOR 'mysql'@'localhost' = PASSWORD('admin42');
+CREATE USER IF NOT EXISTS 'mysql'@'%' IDENTIFIED BY 'admin42';
+GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost';
+GRANT ALL PRIVILEGES ON serverdb.* TO 'mysql'@'%';
+FLUSH PRIVILEGES;

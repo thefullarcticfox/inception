@@ -5,10 +5,11 @@ RUN		apk add --no-cache nginx openssl openssh
 RUN		mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
 
 # copy indexpage and configs
-COPY	./index.html		/var/www/localhost/htdocs
-COPY	./localhost.conf	/etc/nginx/conf.d/default.conf
-COPY	./localhost.csr.cnf	/etc/ssl/certs/localhost.csr.cnf
-COPY	./v3.ext			/etc/ssl/certs/v3.ext
+COPY	./conf/localhost.conf		/etc/nginx/conf.d/default.conf
+COPY	./conf/localhost.csr.cnf	/etc/ssl/certs/localhost.csr.cnf
+COPY	./conf/sshd_config			/etc/ssh/
+COPY	./conf/v3.ext				/etc/ssl/certs/v3.ext
+COPY	./tools/index.html			/var/www/localhost/htdocs
 
 # checking www-data: 82 is the standard uid/gid for "www-data" in Alpine
 # RUN	addgroup -g 82 -S www-data; adduser -u 82 -D -S -G www-data www-data
@@ -33,7 +34,6 @@ RUN		openssl dhparam -out /etc/ssl/certs/dhparam.pem 1024
 
 # ssh keys generation and config + user creation/password change
 RUN		ssh-keygen -A
-COPY	./sshd_config /etc/ssh/
 RUN		adduser -D admin && \
 		echo "admin:admin42" | chpasswd && echo "root:admin42" | chpasswd
 
