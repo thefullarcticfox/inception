@@ -9,7 +9,7 @@ done
 if [ ! -f /var/www/localhost/htdocs/index.php ]
 then
 	cp -r /srcs/wordpress /var/www/localhost/htdocs/
-	if ! $(wp core is-installed --path=/var/www/localhost/htdocs --allow-root)
+	if ! $(wp core is-installed --path=/var/www/localhost/htdocs/wordpress --allow-root)
 	then
 		# wp installation
 		wp core install --url=http://192.168.117.242:5050/ \
