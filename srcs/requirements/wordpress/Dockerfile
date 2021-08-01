@@ -1,4 +1,4 @@
-FROM	alpine:3.12
+FROM	alpine:3.14
 WORKDIR	/srcs
 RUN		apk update && apk upgrade
 RUN		apk add --no-cache nginx mariadb-client php7 php7-fpm php7-curl php7-dom php7-ftp \
@@ -7,7 +7,7 @@ RUN		apk add --no-cache nginx mariadb-client php7 php7-fpm php7-curl php7-dom ph
 # nginx needed only for nginx user/group
 
 # download wordpress to be ready on entrypoint
-ADD		https://wordpress.org/latest.tar.gz ./wordpress.tar.gz
+RUN		wget https://wordpress.org/latest.tar.gz -O ./wordpress.tar.gz
 RUN		tar -xzvf wordpress.tar.gz
 # download wp-cli
 ADD		https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar ./

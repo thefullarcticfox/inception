@@ -1,3 +1,7 @@
+DOCKER_PS		:= $(shell docker ps -a -q)
+DOCKER_VOLUMES	:= $(shell docker volume ls -q)
+DOCKER_IMAGES	:= $(shell docker image ls -q)
+
 all:
 	@mkdir -pv ~/data/db
 	@mkdir -pv ~/data/wp
@@ -12,8 +16,8 @@ clean:
 	@docker-compose -f ./srcs/docker-compose.yml down
 
 cleanall: clean
-	@[ ! -z $(docker ps -a -q) ]		&& docker rm -f $(docker ps -a -q)				|| echo "No containers"
-	@[ ! -z $(docker volume ls -q) ]	&& docker volume rm $(docker volume ls -q)		|| echo "No volumes"
-	@[ ! -z $(docker images ls -q) ]	&& docker images rm -f $(docker images ls -q)	|| echo "No images"
+	@[[ -n "$(DOCKER_PS)" ]]		&& docker rm -f $(DOCKER_PS)			|| echo "No containers"
+	@[[ -n "$(DOCKER_VOLUMES)" ]]	&& docker volume rm $(DOCKER_VOLUMES)	|| echo "No volumes"
+	@[[ -n "$(DOCKER_IMAGES)" ]]	&& docker image rm -f $(DOCKER_IMAGES)	|| echo "No images"
 
 re: clean all

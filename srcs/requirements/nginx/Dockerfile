@@ -1,11 +1,11 @@
-FROM	alpine:3.12
+FROM	alpine:3.14
 WORKDIR	/srcs
 RUN		apk update && apk upgrade
 RUN		apk add --no-cache nginx openssl openssh
 RUN		mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
 
 # copy indexpage and configs
-COPY	./conf/localhost.conf		/etc/nginx/conf.d/default.conf
+COPY	./conf/localhost.conf		/etc/nginx/http.d/default.conf
 COPY	./conf/localhost.csr.cnf	/etc/ssl/certs/localhost.csr.cnf
 COPY	./conf/sshd_config			/etc/ssh/
 COPY	./conf/v3.ext				/etc/ssl/certs/v3.ext
