@@ -1,6 +1,6 @@
 #!/bin/sh
 
-until echo "\q" | mariadb -h "mariadb" -u "mysql" -p"admin42" serverdb ; do
+until echo "\q" | mariadb -h "mariadb" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" serverdb ; do
   >&2 echo "MariaDB is unavailable - sleeping"
   sleep 1
 done

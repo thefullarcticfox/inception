@@ -27,7 +27,7 @@ services:
     networks:
       - inception
     volumes:
-      - "mariadb-data:/var/lib/mariadb"
+      - "mariadb-data:/var/lib/mysql"
     restart: on-failure
     init: true
   wordpress:
