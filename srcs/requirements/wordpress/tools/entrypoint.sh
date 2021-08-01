@@ -29,6 +29,7 @@ then
 		# set website theme
 		wp theme install bappi --activate \
 		--path=/var/www/localhost/htdocs/wordpress --allow-root
+		chown -R nginx:nginx /var/www/localhost/htdocs
 	fi
 fi
 
