@@ -12,8 +12,8 @@ clean:
 	@docker-compose -f ./srcs/docker-compose.yml down
 
 cleanall: clean
-	@docker rm -f $(docker ps -a -q)
-	@docker images rm -f $(docker images ls -q)
-	@docker volume rm $(docker volume ls -q)
+	@[ ! -z $(docker ps -a -q) ]		&& docker rm -f $(docker ps -a -q)				|| echo "No containers"
+	@[ ! -z $(docker volume ls -q) ]	&& docker volume rm $(docker volume ls -q)		|| echo "No volumes"
+	@[ ! -z $(docker images ls -q) ]	&& docker images rm -f $(docker images ls -q)	|| echo "No images"
 
 re: clean all
