@@ -2,17 +2,21 @@ version: "3.9"  # optional since v1.27.0
 services:
     nginx:
         build: ./requirements/nginx/
+        container_name: nginx
+        hostname: salec
+        domainname: salec.42.fr
         ports:
             - "22:22"
             - "80:80"
             - "443:443"
-        hostname: salec
-        domainname: salec.42.fr
         networks:
-            - inception
+            inception:
+                aliases:
+                    - salec.42.fr
         extra_hosts:
             - "salec.42.fr:127.0.0.1"
+        restart: on-failure
+        init: true
 
 networks:
     inception:
-        driver: bridge
