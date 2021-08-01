@@ -31,11 +31,11 @@ RUN		openssl x509 -req -in /etc/ssl/certs/localhost.csr \
 # dhparam for tls
 RUN		openssl dhparam -out /etc/ssl/certs/dhparam.pem 1024
 
-# # ssh keys generation and config + user creation/password change
-# RUN		ssh-keygen -A
-# COPY	./sshd_config /etc/ssh/
-# RUN		adduser -D admin && \
-# 		echo "admin:admin42" | chpasswd && echo "root:admin42" | chpasswd
+# ssh keys generation and config + user creation/password change
+RUN		ssh-keygen -A
+COPY	./sshd_config /etc/ssh/
+RUN		adduser -D admin && \
+		echo "admin:admin42" | chpasswd && echo "root:admin42" | chpasswd
 
-EXPOSE		443
+EXPOSE		22 80 443
 ENTRYPOINT	nginx -g "daemon off;"
